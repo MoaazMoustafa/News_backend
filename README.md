@@ -30,7 +30,7 @@ The user journey consists of the following steps:
 - Node.js
 - MongoDB
 - Redis caching
-- Logger (use pino)
+- Logger (pino)
 - News API
 
 ## Getting Started
