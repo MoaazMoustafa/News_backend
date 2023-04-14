@@ -1,7 +1,5 @@
 const express = require("express");
 const app = express();
-const newsRoutes = require("./routes/news");
-const usersRoutes = require("./routes/auth");
 const mongoose = require("mongoose");
 const bodyParser = require('body-parser');
 const pino = require('pino');
@@ -20,6 +18,10 @@ const loggerMiddleware = pinoHttp({
     logger
 });
 
+const newsRoutes = require("./routes/news");
+const usersRoutes = require("./routes/auth");
+const config = require("./config")
+
 
 app.use(loggerMiddleware);
 app.use(cors());
@@ -36,9 +38,8 @@ app.use((error, req, res, next) => {
     });
 });
 
-const mongoURL = "mongodb://database:27017/news"
 
-mongoose.connect(mongoURL).then(
-    app.listen(3000)
+mongoose.connect(config.MONGO_URL).then(
+    app.listen(config.PORT)
 
 ).catch(err => console.log(err));
