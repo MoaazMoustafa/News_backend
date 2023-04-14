@@ -20,6 +20,13 @@ router.post(
             .normalizeEmail(),
         body("fullName", "fullName must be greater than 5 characters").isLength({ min: 5 }).trim().not().isEmpty(),
         body("password", "Password must be greater than 5 characters").isLength({ min: 5 }).trim(),
+        body('passwordConfirmation').custom((value, { req }) => {
+            if (value !== req.body.password) {
+                throw new Error('Password confirmation does not match password');
+            }
+
+            return true;
+        })
     ],
     userController.signup
 );
