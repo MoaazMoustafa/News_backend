@@ -2,8 +2,8 @@ version: '3.2'
 services:
   app:
     build: .
-    # expose:
-    #   - 3000
+    expose:
+      - 3000
     ports:
       - 8000:3000
     depends_on:
@@ -11,6 +11,7 @@ services:
     environment:
       API_KEY: f85b37cc439d4121bbeb8b774f6617c0
       JWT_SECRET_KEY: emery_gpo_backlands_panama_cobble
+      MONGO_URL: "mongodb://database:27017/news"
     
   database:
     image: mongo

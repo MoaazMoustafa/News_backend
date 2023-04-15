@@ -2,7 +2,6 @@ const mongoose = require("mongoose")
 const Schema = mongoose.Schema;
 const jwt = require("jsonwebtoken");
 const util = require("util");
-//TODO
 const jwtVerify = util.promisify(jwt.verify);
 const config = require('../config');
 

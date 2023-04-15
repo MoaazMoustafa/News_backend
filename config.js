@@ -7,7 +7,7 @@ const getEnv = (envName, required = true) => {
 const appConfig = {
   API_KEY: getEnv('API_KEY'),
   PORT: getEnv('PORT', false) || 3000,
-  MONGO_URL: "mongodb://database:27017/news",
+  MONGO_URL: getEnv('MONGO_URL'),
   JWT_SECRET_KEY: getEnv('JWT_SECRET_KEY'),
   newsBaseURL: 'https://newsapi.org/v2'
 }
