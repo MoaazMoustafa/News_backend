@@ -1,10 +1,10 @@
 const { validationResult } = require("express-validator");
-const User = require("../models/user");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-
 const redis = require("redis");
 const client = redis.createClient({ host: "redis-server" });
+
+const User = require("../models/user");
 const config = require("../config");
 
 exports.signup = (req, res, next) => {

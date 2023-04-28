@@ -1,15 +1,16 @@
 const axios = require("axios");
-const User = require("../models/user");
 const redis = require("redis");
-const appConfig = require("../config");
+const User = require("../models/user");
 const client = redis.createClient({
     host: "redis-server",
 });
 
+const appConfig = require("../config");
+
 exports.sources = async (req, res, next) => {
     const user = await User.findById(req.user._id);
     const userSources = user?.sources || [];
-    //TODO use redis here
+
     axios
         .get(
             `${appConfig.newsBaseURL}/top-headlines/sources?apiKey=${appConfig.API_KEY}`
