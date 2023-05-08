@@ -69,7 +69,7 @@ exports.home = async (req, res, next) => {
             sourcesParam = "";
         }
 
-        client.get(req.user._id.toString(), (err, reply) => {
+        client.get(req.user._id.toString(), async (err, reply) => {
             if (err) console.error(err);
             if (reply) {
                 return res.status(200).json(JSON.parse(reply));
@@ -79,7 +79,7 @@ exports.home = async (req, res, next) => {
                     : "top-headlines?country=us";
                 try {
 
-                    const result = axios.get(`${appConfig.newsBaseURL}/${queryParam}&apiKey=${appConfig.API_KEY}`)
+                    const result = await axios.get(`${appConfig.newsBaseURL}/${queryParam}&apiKey=${appConfig.API_KEY}`)
                     client.set(
                         req.user._id.toString(),
                         JSON.stringify(result.data),
