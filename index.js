@@ -43,3 +43,4 @@ mongoose.connect(config.MONGO_URL).then(
     app.listen(config.PORT)
 
 ).catch(err => console.log(err));
+module.exports = app;

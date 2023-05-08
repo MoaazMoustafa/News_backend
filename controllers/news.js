@@ -11,23 +11,21 @@ exports.sources = async (req, res, next) => {
     const user = await User.findById(req.user._id);
     const userSources = user?.sources || [];
 
-    axios
-        .get(
-            `${appConfig.newsBaseURL}/top-headlines/sources?apiKey=${appConfig.API_KEY}`
-        )
-        .then((result) => {
-            result?.data?.sources.map((source) => {
-                if (userSources.includes(source?.id)) source.subscribed = true;
-                else {
-                    source.subscribed = false;
-                }
-                return source;
-            });
-            return res.status(200).json(result.data);
-        })
-        .catch((err) => {
-            next(err);
+    try {
+
+        const result = await axios.get(`${appConfig.newsBaseURL}/top-headlines/sources?apiKey=${appConfig.API_KEY}`)
+        result?.data?.sources.map((source) => {
+            if (userSources.includes(source?.id)) source.subscribed = true;
+            else {
+                source.subscribed = false;
+            }
+            return source;
         });
+        return res.status(200).json(result.data);
+    }
+    catch (err) {
+        next(err);
+    }
 };
 
 exports.subscribe = async (req, res, next) => {
@@ -79,25 +77,23 @@ exports.home = async (req, res, next) => {
                 const queryParam = sourcesParam
                     ? `everything?sources=${sourcesParam}`
                     : "top-headlines?country=us";
-                axios
-                    .get(
-                        `${appConfig.newsBaseURL}/${queryParam}&apiKey=${appConfig.API_KEY}`
-                    )
-                    .then((result) => {
-                        client.set(
-                            req.user._id.toString(),
-                            JSON.stringify(result.data),
-                            "EX",
-                            300,
-                            (err, reply) => {
-                                if (err) next(err);
-                                return res.status(200).json(result.data);
-                            }
-                        );
-                    })
-                    .catch((err) => {
-                        next(err);
-                    });
+                try {
+
+                    const result = axios.get(`${appConfig.newsBaseURL}/${queryParam}&apiKey=${appConfig.API_KEY}`)
+                    client.set(
+                        req.user._id.toString(),
+                        JSON.stringify(result.data),
+                        "EX",
+                        300,
+                        (err, reply) => {
+                            if (err) next(err);
+                            return res.status(200).json(result.data);
+                        }
+                    );
+                }
+                catch (err) {
+                    next(err);
+                }
             }
         });
     } catch (err) {

@@ -10,12 +10,12 @@ router.post(
     [
         body("email", "Please enter a valid email")
             .isEmail()
-            .custom((value, { req }) => {
-                return User.findOne({ email: value }).then((user) => {
-                    if (user) {
-                        return Promise.reject("Email address already exists");
-                    }
-                });
+            .custom(async value => {
+                const user = await User.findOne({ email: value });
+                if (user) {
+                    throw new Error('Email address already exists');
+                }
+                // return true;
             })
             .normalizeEmail(),
         body("fullName", "fullName must be greater than 5 characters").isLength({ min: 5 }).trim().not().isEmpty(),
